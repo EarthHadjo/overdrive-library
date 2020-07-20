@@ -1,17 +1,53 @@
 <!DOCTYPE html>
 {% extends '../base.html' %}
 {% block body_block %}
-<h1>All Available Books</h1>
+<div class="bg_cover bg_allbooks"></div>
+
+<div class="d-flex flex-column">
+    <div class="card-group">
+        <div class="card flex-column bg-transparent p-2 mb-3">
+            <h5 class="card-header text-light font-weight-bold">Filter By Language:</h5>
+            <div class="list-group-item filter-box">
+                {% for language in languages %}
+                    <a href="{% url 'all_books'%}?language={{language}}">{{language}}</a>
+                {% endfor %}
+            </div>
+            <a class="btn btn-secondary float-left" href="{% url 'all_books'%}">Show All Languages</a>
+        </div>
+
+        <div class="card bg-transparent p-2 mb-3 ">
+            <h5 class="card-header text-light font-weight-bold">Filter Titles By:</h5>
+            <div class="list-group-item filter-box">
+                {% for letter in letters %}
+                    <a href="{% url 'all_books'%}?title_filter={{letter}}">{{letter}}</a>
+                {% endfor %}
+            </div>
+            <a class="btn btn-secondary float-left" href="{% url 'all_books'%}?sort=sort_title">Sort All By Title</a>
+        </div>
+        <div class="card bg-transparent p-2 mb-3">
+            <h5 class="card-header text-light font-weight-bold">Filter Authors By:</h5>
+            <div class="list-group-item filter-box">
+                {% for letter in letters %}
+                    <a href="{% url 'all_books'%}?author_filter={{letter}}">{{letter}}</a>
+                {% endfor %}
+            </div>
+            <a class="btn btn-secondary float-left" href="{% url 'all_books'%}?sort=author">Sort All by Author</a>
+        </div>
+    </div>
+</div>
+<h1 class="text-white">Available Books</h1>
 <div class="row row-cols-3">
     {% for book in books %}
-    <div class="p-2">
-        <a href='{{book.id}}' class="bg_book col card text-center shadow-sm"
+    <div class="p-3">
+        <a href='{{book.id}}' class="bg_book col card text-center"
             style="border: 0.5rem solid {{color}}; border-left: none; border-right: none;">
             <h5 class="text-truncate">{{ book.title }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted text-truncate">By {{ book.author }}</h6>
+            <h6 class="card-subtitle mb-2 text-muted text-truncate">By {{ book.author_last }}, {{book.author_first}}</h6>
         </a>
     </div>
+    {% empty %}
+            <br/>
+            <h4 class="pl-3 text-white"> => Sorry, no books match your search parameters. </h4>
     {% endfor %}
 </div>
-
 {% endblock body_block %}

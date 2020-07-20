@@ -1,5 +1,5 @@
 from random import randint
-# from .models import CustomUser
+from datetime import datetime
 
 
 def makenumber():
@@ -8,11 +8,18 @@ def makenumber():
     No duplicates between users are allowed. They will be assigned to the user
     on creation of the user account.
     """
-
-    # all_users = CustomUser.objects.all()
-    # all_numbers = [custom_user.card_number for custom_user in all_users]
     new_number = str(randint(1, 9))
     new_number += "".join([str(randint(0, 9)) for i in range(9)])
 
     print("new number is:", new_number)
     return new_number
+
+
+def greeting():
+    current_hour = datetime.now().hour
+    if current_hour >= 5 and current_hour < 12:
+        return 'Morning'
+    elif current_hour >= 12 and current_hour < 18:
+        return 'Afternoon'
+    else:
+        return 'Evening'

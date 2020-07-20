@@ -1,14 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import render, reverse
+from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import HttpResponseRedirect, reverse
+from django.contrib.auth.decorators import login_required
+from django.views.generic.base import View
+
 from custom_user.models import CustomUser
 from custom_user.forms import SignupForm, LoginForm
-from django.views.generic.base import View
+from custom_user.helpers import greeting
+
 from digital_books.models import Book
-from django.contrib.auth.decorators import login_required
 
 
 def createUser(request):
+    """Allows new users to create an account, and after successful
+    account creation logs them in."""
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
@@ -18,7 +23,6 @@ def createUser(request):
                 password=data['password'],
                 display_name=data['display_name'],
                 email=data['email'],
-                is_librarian=False
             )
             custom_user.set_password(raw_password=data['password'])
             custom_user.save()
@@ -100,7 +104,8 @@ def profile(request):
                   'custom_user/profile.html',
                   {'custom_user': custom_user,
                    'books_out': books_out,
-                   'books_hold': books_hold})
+                   'books_hold': books_hold,
+                   'greeting': greeting})
 
 
 def index(request):
